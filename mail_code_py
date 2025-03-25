@@ -12,9 +12,9 @@ if not senha_email:
     exit(1)
 
 # Credenciais do email
-email_remetente = "zoroastreshermeticus@gmail.com"  # Substitua pelo seu email
+email_remetente = "user_your_mail@gmail.com"  # Substitua pelo seu email
 senha_remetente = senha_email  # Usa a variável de ambiente para a senha
-email_destinatario = "mateusgremory@gmail.com"
+email_destinatario = "user_recipient_mail@gmail.com"
 
 # Cria a mensagem
 msg = MIMEMultipart()
