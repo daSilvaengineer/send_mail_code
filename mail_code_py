@@ -1,0 +1,88 @@
+import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+# Acessa a variável de ambiente com a senha
+senha_email = os.getenv("EMAIL_PASSWORD")
+
+# Verifica se a senha foi carregada corretamente da variável de ambiente
+if not senha_email:
+    print("Erro: A senha do e-mail não foi encontrada nas variáveis de ambiente.")
+    exit(1)
+
+# Credenciais do email
+email_remetente = "zoroastreshermeticus@gmail.com"  # Substitua pelo seu email
+senha_remetente = senha_email  # Usa a variável de ambiente para a senha
+email_destinatario = "mateusgremory@gmail.com"
+
+# Cria a mensagem
+msg = MIMEMultipart()
+msg["From"] = email_remetente
+msg["To"] = email_destinatario
+msg["Subject"] = "Envio de email pelo Python"
+
+# Corpo do email (HTML)
+corpo = """
+<p>ATUALIZAÇÃO DE TABELAS COM MySQL</p>
+
+<p>(TABELAS)</p>
+
+<p>
+create table cidade (
+id_cidade int primary key,
+cidade_nome varchar (60),
+uf varchar (2),
+grupo numeric (8,2)
+)
+</p>
+<p>
+create table cliente (
+id_cliente int primary key,
+cliente_nome varchar (100),
+cep numeric (8),
+grupo numeric (8)
+)
+</p>
+
+<p>(VALORES)</p>
+
+<p>
+insert into cidade values 
+(1,'ARAGUAINA','TO','1'),
+(2,'SÃO JOSÉ','SP','2'),
+(3,'UBERLANDIA','MG','3'),
+(4,'ILHEUS','BA','4'),
+(5,'CARAJAS','PA','5'),
+(6,'IMPERATRIZ','MA','6')
+</p>
+<p>
+insert into cliente values 
+(1,'JOSÉ','72888420','1'),
+(2,'CASSIA','73888420','2'),
+(3,'HUGO','74888420','3'),
+(4,'IVO','75888420','4'),
+(5,'JHON','76888420','5'),
+(6,'IRAN','77888420','6')
+</p>
+"""
+msg.attach(MIMEText(corpo, "html"))
+
+# Função para encerrar a conexão com o servidor
+def encerrar_conexao(server):
+    server.quit()
+
+# Enviar email
+try:
+    # Conexão com o servidor SMTP do Gmail
+    server = smtplib.SMTP("smtp.gmail.com", 587)
+    server.starttls()  # Inicia a conexão segura
+    server.login(email_remetente, senha_remetente)  # Faz login no servidor
+    texto = msg.as_string()  # Converte a mensagem para string
+    server.sendmail(email_remetente, email_destinatario, texto)  # Envia o email
+    print("Email enviado com sucesso")
+except Exception as e:
+    print(f"Erro ao enviar email: {e}")
+finally:
+    if 'server' in locals():  # Verifica se o 'server' foi inicializado
+        encerrar_conexao(server)
