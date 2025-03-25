@@ -1,0 +1,9 @@
+# Ignorar arquivos Python compilados
+*.pyc
+__pycache__/
+
+# Ignorar a pasta de ambiente virtual
+venv/
+
+# Ignorar o arquivo .env com a senha de e-mail
+.env
